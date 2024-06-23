@@ -128,17 +128,21 @@ class RCSpec extends AnyWordSpec with Matchers with TypeCheckedTripleEquals  {
       ))
 
       variableReturns.fromUntil("2017.07", "2017.09") should === (
-        Vector(
-          VariableReturn("2017.07", 7.0),
-          VariableReturn("2017.08", 8.0)
+        VariableReturns(
+          Vector(
+            VariableReturn("2017.07", 7.0),
+            VariableReturn("2017.08", 8.0)
+          )
         )
       )
 
       variableReturns.fromUntil("2017.10", "2018.01") should === (
-        Vector(
-          VariableReturn("2017.10", 10.0),
-          VariableReturn("2017.11", 11.0),
-          VariableReturn("2017.12", 12.0)
+        VariableReturns(
+          Vector(
+            VariableReturn("2017.10", 10.0),
+            VariableReturn("2017.11", 11.0),
+            VariableReturn("2017.12", 12.0)
+          )
         )
       )
     }

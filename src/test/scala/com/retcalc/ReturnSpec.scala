@@ -1,6 +1,7 @@
 package com.retcalc
 
-import com.retirementcalc.returns.{FixedReturn, Returns, VariableReturn, VariableReturns, OffsetReturns}
+import com.retirementcalc.equity_data.{EquityData, InflationData}
+import com.retirementcalc.returns.{FixedReturn, OffsetReturns, Returns, VariableReturn, VariableReturns}
 import org.scalactic.{Equality, TolerantNumerics, TypeCheckedTripleEquals}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -37,6 +38,37 @@ class ReturnSpec extends AnyWordSpec with Matchers with TypeCheckedTripleEquals{
     "Return the n+offseth'th rate for OffsetReturn" in {
       val returns = OffsetReturns(variableReturns, 1)
       Returns.monthlyRate(returns, 0) should === (0.2)
+    }
+
+  }
+
+  "Returns.fromEquityAndInflationData" should {
+    "compute real total returns from equity and inflation data" in {
+
+      /*
+        realReturns(n) = (price(n) + dividends(n) / 12) / price(n-1) - inflation(n) / inflation(n - 1)
+       */
+
+      val equities = Vector(
+        EquityData("2117.01", 100.00, 10.00),
+        EquityData("2117.02", 101.00, 12.00),
+        EquityData("2117.03", 102.00, 12.00)
+      )
+
+      val inflations = Vector(
+        InflationData("2117.01", 100.00),
+        InflationData("2117.02", 102.00),
+        InflationData("2117.03", 102.00)
+      )
+
+      Returns.fromEquityAndInflationData(equities, inflations) should === (
+        VariableReturns(
+          Vector(
+            VariableReturn("2117.02", (101.00 + 12.00 / 12) / 100 - 102.00 / 100.00),
+            VariableReturn("2117.03", (102.00 + 12.00 / 12) / 101 - 102.00 / 102.00)
+          )
+        )
+      )
     }
   }
 }

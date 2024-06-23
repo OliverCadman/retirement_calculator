@@ -14,7 +14,6 @@ object RetCalc {
     val amountSaved = income - expenses
 
     (0 until nMonths).foldLeft(initialCapital)((acc, month) => {
-      println(s"Adding $acc for month $month")
       acc * (1 + Returns.monthlyRate(returns, month))+ amountSaved
     }
     )

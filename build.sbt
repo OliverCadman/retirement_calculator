@@ -14,4 +14,7 @@ lazy val app = (project in file("retirement_calculator"))
     assembly / assemblyJarName := "retirementcalc.jar"
   )
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.18" % "test"
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.2.18" % "test",
+  "org.apache.commons" % "commons-csv" % "1.10.0"
+)

@@ -1,19 +1,16 @@
 package com.retirementcalc.equity_data
 
-import scala.io.Source
-
-case class InflationData(monthId: String, index: Double)
+case class InflationData(monthId: String, index: Double) extends EquityInflationData
 
 object InflationData {
   def fromResource(path: String): Vector[InflationData] = {
-    Source.fromResource(path).getLines().drop(1).map {
-      line => {
-        val row = line.split("\t")
-        val monthId: String = row(0)
-        val index: Double = row(1).toDouble
+    scala.io.Source.fromResource(path).getLines().drop(1).map {
+      row =>
+        val fields = row.split("\t")
+        val month = fields(0)
+        val cpi = fields(1)
 
-        InflationData(monthId, index)
-      }
+        InflationData(month, cpi.toDouble)
     }
   }.toVector
 }

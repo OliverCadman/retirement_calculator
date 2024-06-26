@@ -39,5 +39,9 @@ object Returns {
       }
     }.toVector)
   }
+
+//  def write(path: String, returns: Returns): Unit = {
+//    val writer = new CSVWriter
+//  }
 }
 
